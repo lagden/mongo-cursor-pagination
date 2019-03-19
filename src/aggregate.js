@@ -1,6 +1,8 @@
-const _ = require('underscore');
-const sanitizeParams = require('./utils/sanitizeParams');
-const { prepareResponse, generateSort, generateCursorQuery } = require('./utils/query');
+'use strict'
+
+const _ = require('lodash')
+const sanitizeParams = require('./utils/sanitizeParams')
+const {prepareResponse, generateSort, generateCursorQuery} = require('./utils/query')
 
 /**
  * Performs an aggregate() query on a passed-in Mongo collection, using criteria you specify.
@@ -18,7 +20,7 @@ const { prepareResponse, generateSort, generateCursorQuery } = require('./utils/
  *
  * @param {MongoCollection} collection A collection object returned from the MongoDB library's
  *    or the mongoist package's `db.collection(<collectionName>)` method.
- * @param {Object} params
+ * @param {Object} _params
  *    -aggregation {Object[]} The aggregation query.
  *    -limit {Number} The page size. Must be between 1 and `config.MAX_LIMIT`.
  *    -paginatedField {String} The field name to query the range for. The field must be:
@@ -33,37 +35,33 @@ const { prepareResponse, generateSort, generateCursorQuery } = require('./utils/
  *    -after {String} The _id to start querying the page.
  *    -before {String} The _id to start querying previous page.
  */
-module.exports = async function aggregate(collection, params) {
-  params = _.defaults(
-    await sanitizeParams(collection, params),
-    { aggregation: [] }
-  );
-  let cursorQuery = generateCursorQuery(params);
-  let $sort = generateSort(params);
-  
-  let index = _.findIndex(params.aggregation, ((step) => !_.isEmpty(step.$match)));
+async function aggregate(collection, _params) {
+	const params = _.defaults(
+		await sanitizeParams(collection, _params),
+		{aggregation: []}
+	)
+	let cursorQuery = generateCursorQuery(params)
+	let $sort = generateSort(params)
+	let index = _.findIndex(params.aggregation, (step => !_.isEmpty(step.$match)))
 
-  if (index < 0) {
-    params.aggregation.unshift({ $match: cursorQuery });
-    index = 0;
-  } else {
-    const matchStep = params.aggregation[index];
+	if (index < 0) {
+		params.aggregation.unshift({$match: cursorQuery})
+		index = 0
+	} else {
+		const matchStep = params.aggregation[index]
+		params.aggregation[index] = {
+			$match: {
+				$and: [cursorQuery, matchStep.$match]
+			}
+		}
+	}
 
-    params.aggregation[index] = {
-      $match: {
-        $and: [cursorQuery, matchStep.$match]
-      }
-    };
-  }
+	params.aggregation.splice(index + 1, 0, {$sort})
+	params.aggregation.splice(index + 2, 0, {$limit: params.limit + 1})
 
-  params.aggregation.splice(index + 1, 0, { $sort });
-  params.aggregation.splice(index + 2, 0, { $limit: params.limit + 1 });
+	let results = await collection.aggregate(params.aggregation).toArray()
 
-  // Support both the native 'mongodb' driver and 'mongoist'. See:
-  // https://www.npmjs.com/package/mongoist#cursor-operations
-  const aggregateMethod = collection.aggregateAsCursor ? 'aggregateAsCursor': 'aggregate';
+	return prepareResponse(results, params)
+}
 
-  let results = await collection[aggregateMethod](params.aggregation).toArray();
-
-  return prepareResponse(results, params);
-};
+module.exports = aggregate
