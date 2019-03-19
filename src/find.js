@@ -1,6 +1,8 @@
-const _ = require('underscore');
-const sanitizeParams = require('./utils/sanitizeParams');
-const { prepareResponse, generateSort, generateCursorQuery } = require('./utils/query');
+'use strict'
+
+const _ = require('lodash')
+const sanitizeParams = require('./utils/sanitizeParams')
+const {prepareResponse, generateSort, generateCursorQuery} = require('./utils/query')
 
 /**
  * Performs a find() query on a passed-in Mongo collection, using criteria you specify. The results
@@ -8,7 +10,7 @@ const { prepareResponse, generateSort, generateCursorQuery } = require('./utils/
  *
  * @param {MongoCollection} collection A collection object returned from the MongoDB library's
  *    or the mongoist package's `db.collection(<collectionName>)` method.
- * @param {Object} params
+ * @param {Object} _params
  *    -query {Object} The find query.
  *    -limit {Number} The page size. Must be between 1 and `config.MAX_LIMIT`.
  *    -fields {Object} Fields to query in the Mongo object format, e.g. {_id: 1, timestamp :1}.
@@ -25,31 +27,33 @@ const { prepareResponse, generateSort, generateCursorQuery } = require('./utils/
  *    -after {String} The _id to start querying the page.
  *    -before {String} The _id to start querying previous page.
  */
-module.exports = async function(collection, params) {
-  const removePaginatedFieldInResponse = params.fields && !params.fields[params.paginatedField];
 
-  params = _.defaults(
-    await sanitizeParams(collection, params),
-    { query: {} }
-  );
-  const cursorQuery = generateCursorQuery(params);
-  const $sort = generateSort(params);
+async function find(collection, _params = {}) {
+	const removePaginatedFieldInResponse = _params.projection && !_params.projection[_params.paginatedField]
 
-  // Support both the native 'mongodb' driver and 'mongoist'. See:
-  // https://www.npmjs.com/package/mongoist#cursor-operations
-  const findMethod = collection.findAsCursor ? 'findAsCursor': 'find';
+	const params = _.defaults(
+		await sanitizeParams(collection, _params),
+		{query: {}}
+	)
+	const cursorQuery = generateCursorQuery(params)
+	const $sort = generateSort(params)
 
-  const results = await collection[findMethod]({ $and: [cursorQuery, params.query] }, params.fields)
-    .sort($sort)
-    .limit(params.limit + 1) // Query one more element to see if there's another page.
-    .toArray();
+	const results = await collection
+		.find({
+			$and: [cursorQuery, params.query]
+		}, {projection: params.projection})
+		.sort($sort)
+		.limit(params.limit + 1) // Query one more element to see if there's another page.
+		.toArray()
 
-  const response = prepareResponse(results, params);
+	const response = prepareResponse(results, params)
 
-  // Remove fields that we added to the query (such as paginatedField and _id) that the user didn't ask for.
-  if (removePaginatedFieldInResponse) {
-    response.results = _.map(response.results, (result) => _.omit(result, params.paginatedField));
-  }
+	// Remove fields that we added to the query (such as paginatedField and _id) that the user didn't ask for.
+	if (removePaginatedFieldInResponse) {
+		response.results = _.map(response.results, result => _.omit(result, params.paginatedField))
+	}
 
-  return response;
-};
+	return response
+}
+
+module.exports = find

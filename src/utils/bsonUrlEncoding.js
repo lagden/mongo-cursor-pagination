@@ -1,15 +1,14 @@
-var EJSON = require('mongodb-extended-json');
-var base64url = require('base64-url');
+'use strict'
 
-/**
- * These will take a BSON object (an database result returned by the MongoDB library) and
- * encode/decode as a URL-safe string.
- */
+const EJSON = require('mongodb-extjson')
 
-module.exports.encode = function(obj) {
-  return base64url.encode(EJSON.stringify(obj));
-};
+function encode(obj) {
+	return encodeURIComponent(Buffer.from(EJSON.stringify(obj, {relaxed: true}), 'utf8').toString('base64'))
+}
 
-module.exports.decode = function(str) {
-  return EJSON.parse(base64url.decode(str));
-};
+function decode(str) {
+	return EJSON.parse(Buffer.from(decodeURIComponent(str), 'base64').toString('utf8'), {relaxed: true})
+}
+
+exports.encode = encode
+exports.decode = decode

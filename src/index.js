@@ -1,17 +1,17 @@
-var config = require('./config');
-var aggregate = require('./aggregate');
-var find = require('./find');
-var findWithReq = require('./findWithReq');
-var search = require('./search');
-var sanitizeQuery = require('./utils/sanitizeQuery');
-var mongoosePlugin = require('./mongoose.plugin');
+'use strict'
+
+const config = require('./config')
+const aggregate = require('./aggregate')
+const find = require('./find')
+const findWithReq = require('./findWithReq')
+const search = require('./search')
+const sanitizeQuery = require('./utils/sanitizeQuery')
 
 module.exports = {
-  config,
-  find,
-  findWithReq,
-  aggregate,
-  search,
-  mongoosePlugin,
-  sanitizeQuery
-};
+	config,
+	find,
+	findWithReq,
+	aggregate,
+	search,
+	sanitizeQuery
+}

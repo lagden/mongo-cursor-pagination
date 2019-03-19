@@ -1,24 +1,21 @@
 {
-  "name": "mongo-cursor-pagination",
-  "version": "7.1.0",
+  "name": "@tadashi/mongo-cursor-pagination",
+  "version": "1.0.0",
   "description": "Make it easy to return cursor-paginated results from a Mongo collection",
-  "main": "index.js",
+  "main": "src/index.js",
   "files": [
-    "index.js",
-    "dist",
+    "LICENSE",
+    "README.md",
     "src"
   ],
   "scripts": {
-    "ci": "npm run lint && npm run test",
-    "test": "DRIVER=mongoist ava && DRIVER=native ava",
-    "lint": "eslint .",
-    "babelBuild": "babel src -d dist/node",
-    "babelWatch": "babel --watch src -d dist/node",
-    "prepublish": "npm run babelBuild"
+    "eslint": "eslint --ignore-path .gitignore .",
+    "pretest": "npm run eslint",
+    "test": "ava"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mixmaxhq/mongo-cursor-pagination.git"
+    "url": "git+https://github.com/lagden/mongo-cursor-pagination.git"
   },
   "keywords": [
     "mongo",
@@ -30,44 +27,30 @@
     "find"
   ],
   "author": "Brad Vogel <brad@mixmax.com> (https://mixmax.com/)",
+  "contributors": [
+    "Thiago Lagden <Lagden@gmail.com>"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mixmaxhq/mongo-cursor-pagination/issues"
+    "url": "https://github.com/lagden/mongo-cursor-pagination/issues"
   },
-  "homepage": "https://github.com/mixmaxhq/mongo-cursor-pagination#readme",
+  "homepage": "https://github.com/lagden/mongo-cursor-pagination#readme",
   "dependencies": {
-    "base64-url": "^2.2.0",
-    "mongodb-extended-json": "^1.7.1",
-    "object-path": "^0.11.4",
-    "projection-utils": "^1.1.0",
-    "semver": "^5.4.1",
-    "underscore": "^1.8.3"
+    "mongodb-extjson": "3.0.3",
+    "object-path": "0.11.4",
+    "projection-utils": "1.1.0",
+    "lodash": "4.17.11"
   },
   "devDependencies": {
-    "ava": "^0.22.0",
-    "ava-spec": "^1.1.0",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "bson": "^0.5.6",
-    "eslint": "^4.9.0",
-    "eslint-config-mixmax": "^0.9.0",
-    "mockgoose": "7.3.5",
-    "mongodb": "^2.2.11",
-    "mongodb-memory-server": "^1.6.1",
-    "mongoist": "1.4.3",
-    "mongoose": "5.0.15"
+    "ava": "1.3.1",
+    "eslint": "5.15.1",
+    "eslint-config-xo": "0.26.0",
+    "eslint-plugin-unicorn": "7.1.0",
+    "mongodb": "3.1.13",
+    "mongodb-memory-server": "4.2.1",
+    "prettier": "1.16.4"
   },
   "engines": {
-    "node": ">= 6.9.1"
-  },
-  "ava": {
-    "require": [
-      "babel-register"
-    ],
-    "timeout": "60s",
-    "files": [
-      "spec/**/*Spec.js"
-    ]
+    "node": ">= 8.0.0"
   }
 }
