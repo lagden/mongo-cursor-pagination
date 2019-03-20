@@ -45,21 +45,18 @@ test.before('start mongo server', async () => {
 		]),
 
 		db.collection('aggregate_test_aggregation').insertMany([
-			...[],
-			...[
-				{
-					items: [1, 2, 3]
-				},
-				{
-					items: [4, 5, 6]
-				},
-				{
-					items: [1, 3, 6]
-				},
-				{
-					items: [2, 4, 5]
-				}
-			]
+			{
+				items: [1, 2, 3]
+			},
+			{
+				items: [4, 5, 6]
+			},
+			{
+				items: [1, 3, 6]
+			},
+			{
+				items: [2, 4, 5]
+			}
 		]),
 		db.collection('aggregate_test_aggregation_lookup').insertMany([
 			{
@@ -604,4 +601,8 @@ test('should respect sortAscending option with after/before', async t => {
 	t.is(res.results[2].counter, 3)
 	t.false(res.hasPrevious)
 	t.true(res.hasNext)
+})
+
+test.after.always(() => {
+	mongod.stop()
 })

@@ -6,7 +6,7 @@ import {MongoClient} from 'mongodb'
 function start() {
 	return new MongoMemoryServer({
 		binary: {
-			version: 'latest'
+			version: '4.0.6'
 		}
 	})
 }

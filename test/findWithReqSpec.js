@@ -465,3 +465,7 @@ test('invalid fields', async t => {
 	}))
 	t.is(error.message, 'no valid fields provided')
 })
+
+test.after.always(() => {
+	mongod.stop()
+})

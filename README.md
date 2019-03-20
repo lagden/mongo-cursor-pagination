@@ -16,8 +16,8 @@
 [xo]:              https://github.com/sindresorhus/xo
 
 
-This is a fork from project of [mixmaxhq](https://github.com/mixmaxhq/mongo-cursor-pagination) and it was optimized to work only with [native drive](https://mongodb.github.io/node-mongodb-native/).
-For more information see the original project.
+This is a fork of the [mixmaxhq](https://github.com/mixmaxhq/mongo-cursor-pagination) project and has been optimized to work only with the [mongodb native drive](https://mongodb.github.io/node-mongodb-native/).
+For more information, see the original project.
 
 
 ## Install

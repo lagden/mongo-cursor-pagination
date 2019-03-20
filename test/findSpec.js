@@ -1268,3 +1268,7 @@ test.serial('find limits should clamp to max limit', async t => {
 
 	paging.config.MAX_LIMIT = originalMaxLimit
 })
+
+test.after.always(() => {
+	mongod.stop()
+})

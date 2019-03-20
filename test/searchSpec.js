@@ -216,3 +216,7 @@ test('limit 1000', async t => {
 	})
 	t.is(res.results.length, 6)
 })
+
+test.after.always(() => {
+	mongod.stop()
+})
