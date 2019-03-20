@@ -1,8 +1,6 @@
 'use strict'
 
 import test from 'ava'
-import hexID from '@tadashi/hex-id'
-import {ObjectID} from 'mongodb'
 import paging from '../src'
 import dbUtils from './helpers/db'
 
@@ -14,7 +12,7 @@ test.before('start mongo server', async () => {
 
 	// Set up collections once for testing later.
 	await Promise.all([
-		db.collection('test_paging').insertMany([
+		db.collection('aggregate_test_paging').insertMany([
 			{
 				counter: 1
 			},
@@ -45,25 +43,25 @@ test.before('start mongo server', async () => {
 				color: 'blue'
 			}
 		]),
-		db.collection('test_aggregation').insertMany([
-			{
-				_id: new ObjectID(hexID()),
-				items: [1, 2, 3]
-			},
-			{
-				_id: new ObjectID(hexID()),
-				items: [4, 5, 6]
-			},
-			{
-				_id: new ObjectID(hexID()),
-				items: [1, 3, 6]
-			},
-			{
-				_id: new ObjectID(hexID()),
-				items: [2, 4, 5]
-			}
+
+		db.collection('aggregate_test_aggregation').insertMany([
+			...[],
+			...[
+				{
+					items: [1, 2, 3]
+				},
+				{
+					items: [4, 5, 6]
+				},
+				{
+					items: [1, 3, 6]
+				},
+				{
+					items: [2, 4, 5]
+				}
+			]
 		]),
-		db.collection('test_aggregation_lookup').insertMany([
+		db.collection('aggregate_test_aggregation_lookup').insertMany([
 			{
 				_id: 1,
 				name: 'mercury'
@@ -96,8 +94,46 @@ test.beforeEach(async t => {
 	t.context.db = await dbUtils.db(mongod)
 })
 
+test('return expected results from aggregation', async t => {
+	const collection = await t.context.db.collection('aggregate_test_aggregation')
+	const res = await paging.aggregate(collection, {
+		aggregation: [
+			{
+				$match: {
+					items: 5
+				}
+			},
+			{
+				$unwind: '$items'
+			},
+			{
+				$lookup: {
+					from: 'aggregate_test_aggregation_lookup',
+					localField: 'items',
+					foreignField: '_id',
+					as: 'itemDoc'
+				}
+			},
+			{
+				$unwind: '$itemDoc'
+			},
+			{
+				$group: {
+					_id: '$_id',
+					planets: {$push: '$itemDoc.name'}
+				}
+			}
+		],
+		limit: 1
+	})
+
+	t.is(res.results.length, 1)
+	t.deepEqual(res.results[0].planets, ['mars', 'jupiter', 'saturn'])
+	t.true(res.hasNext)
+})
+
 test('should query first few pages with next/previous', async t => {
-	const collection = t.context.db.collection('test_paging')
+	const collection = t.context.db.collection('aggregate_test_paging')
 	// First page of 3
 	let res = await paging.aggregate(collection, {
 		limit: 3
@@ -163,7 +199,7 @@ test('should query first few pages with next/previous', async t => {
 })
 
 test('should query first few pages with after/before', async t => {
-	const collection = t.context.db.collection('test_paging')
+	const collection = t.context.db.collection('aggregate_test_paging')
 	// First page of 3
 	let res = await paging.aggregate(collection, {
 		limit: 3
@@ -229,7 +265,7 @@ test('should query first few pages with after/before', async t => {
 })
 
 test('should handle hitting the end with next/previous', async t => {
-	const collection = t.context.db.collection('test_paging')
+	const collection = t.context.db.collection('aggregate_test_paging')
 	// First page of 2
 	var res = await paging.aggregate(collection, {
 		limit: 4
@@ -269,7 +305,7 @@ test('should handle hitting the end with next/previous', async t => {
 })
 
 test('should handle hitting the end with after/before', async t => {
-	const collection = t.context.db.collection('test_paging')
+	const collection = t.context.db.collection('aggregate_test_paging')
 	// First page of 2
 	var res = await paging.aggregate(collection, {
 		limit: 4
@@ -309,7 +345,7 @@ test('should handle hitting the end with after/before', async t => {
 })
 
 test('should handle hitting the beginning with next/previous', async t => {
-	const collection = t.context.db.collection('test_paging')
+	const collection = t.context.db.collection('aggregate_test_paging')
 	// First page of 2
 	var res = await paging.aggregate(collection, {
 		limit: 4
@@ -352,7 +388,7 @@ test('should handle hitting the beginning with next/previous', async t => {
 })
 
 test('should handle hitting the beginning with after/before', async t => {
-	const collection = t.context.db.collection('test_paging')
+	const collection = t.context.db.collection('aggregate_test_paging')
 	// First page of 2
 	var res = await paging.aggregate(collection, {
 		limit: 4
@@ -395,7 +431,7 @@ test('should handle hitting the beginning with after/before', async t => {
 })
 
 test('should use passed-in simple aggregation', async t => {
-	const collection = t.context.db.collection('test_paging')
+	const collection = t.context.db.collection('aggregate_test_paging')
 	// First page.
 	var res = await paging.aggregate(collection, {
 		aggregation: [
@@ -412,7 +448,7 @@ test('should use passed-in simple aggregation', async t => {
 })
 
 test('should not return "next" or "previous" if there are no results', async t => {
-	const collection = t.context.db.collection('test_paging')
+	const collection = t.context.db.collection('aggregate_test_paging')
 	// First page.
 	var res = await paging.aggregate(collection, {
 		limit: 3,
@@ -429,7 +465,7 @@ test('should not return "next" or "previous" if there are no results', async t =
 })
 
 test('should respect sortAscending option with next/previous', async t => {
-	const collection = t.context.db.collection('test_paging')
+	const collection = t.context.db.collection('aggregate_test_paging')
 	// First page of 3
 	var res = await paging.aggregate(collection, {
 		limit: 3,
@@ -500,7 +536,7 @@ test('should respect sortAscending option with next/previous', async t => {
 })
 
 test('should respect sortAscending option with after/before', async t => {
-	const collection = t.context.db.collection('test_paging')
+	const collection = t.context.db.collection('aggregate_test_paging')
 	// First page of 3
 	var res = await paging.aggregate(collection, {
 		limit: 3,
@@ -567,44 +603,5 @@ test('should respect sortAscending option with after/before', async t => {
 	t.is(res.results[1].counter, 2)
 	t.is(res.results[2].counter, 3)
 	t.false(res.hasPrevious)
-	t.true(res.hasNext)
-})
-
-test('return expected results from aggregation', async t => {
-	const collection = t.context.db.collection('test_aggregation')
-
-	const res = await paging.aggregate(collection, {
-		aggregation: [
-			{
-				$match: {
-					items: 5
-				}
-			},
-			{
-				$unwind: '$items'
-			},
-			{
-				$lookup: {
-					from: 'test_aggregation_lookup',
-					localField: 'items',
-					foreignField: '_id',
-					as: 'itemDoc'
-				}
-			},
-			{
-				$unwind: '$itemDoc'
-			},
-			{
-				$group: {
-					_id: '$_id',
-					planets: {$push: '$itemDoc.name'}
-				}
-			}
-		],
-		limit: 1
-	})
-
-	t.is(res.results.length, 1)
-	t.deepEqual(res.results[0].planets, ['mars', 'jupiter', 'saturn'])
 	t.true(res.hasNext)
 })

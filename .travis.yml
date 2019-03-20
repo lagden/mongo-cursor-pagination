@@ -6,10 +6,10 @@ node_js:
 services:
   - mongodb
 
-cache: npm
+# cache: npm
 
 before_script: "npm i coveralls nyc"
-script: "npm run eslint;npx nyc ava"
+script: "npm run eslint;npx nyc ava --serial --tap"
 after_script: "npm run report"
 
 # Don’t build pushes to branches other than our published branches. (This doesn’t affect PR
