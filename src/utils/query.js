@@ -26,7 +26,7 @@ module.exports = {
 
 		// If we sorted reverse to get the previous page, correct the sort order.
 		if (params.previous) {
-			results = results.reverse()
+			results.reverse()
 		}
 
 		const response = {

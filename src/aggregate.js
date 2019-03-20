@@ -40,8 +40,8 @@ async function aggregate(collection, _params) {
 		await sanitizeParams(collection, _params),
 		{aggregation: []}
 	)
-	let cursorQuery = generateCursorQuery(params)
-	let $sort = generateSort(params)
+	const cursorQuery = generateCursorQuery(params)
+	const $sort = generateSort(params)
 	let index = _.findIndex(params.aggregation, (step => !_.isEmpty(step.$match)))
 
 	if (index < 0) {
@@ -59,7 +59,7 @@ async function aggregate(collection, _params) {
 	params.aggregation.splice(index + 1, 0, {$sort})
 	params.aggregation.splice(index + 2, 0, {$limit: params.limit + 1})
 
-	let results = await collection.aggregate(params.aggregation).toArray()
+	const results = await collection.aggregate(params.aggregation).toArray()
 
 	return prepareResponse(results, params)
 }

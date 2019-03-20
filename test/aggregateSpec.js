@@ -1,6 +1,8 @@
 'use strict'
 
 import test from 'ava'
+import hexID from '@tadashi/hex-id'
+import {ObjectID} from 'mongodb'
 import paging from '../src'
 import dbUtils from './helpers/db'
 
@@ -45,15 +47,19 @@ test.before('start mongo server', async () => {
 		]),
 		db.collection('test_aggregation').insertMany([
 			{
+				_id: new ObjectID(hexID()),
 				items: [1, 2, 3]
 			},
 			{
+				_id: new ObjectID(hexID()),
 				items: [4, 5, 6]
 			},
 			{
+				_id: new ObjectID(hexID()),
 				items: [1, 3, 6]
 			},
 			{
+				_id: new ObjectID(hexID()),
 				items: [2, 4, 5]
 			}
 		]),
