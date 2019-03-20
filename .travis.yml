@@ -8,9 +8,7 @@ cache:
   directories:
     - node_modules
 
-before_script:
-  - "npm i coveralls nyc"
-  - "sleep 15"
+before_script: "npm i coveralls nyc"
 script: "npm run eslint;npx nyc ava"
 after_script: "npm run report"
 
