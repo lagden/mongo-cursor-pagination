@@ -7,7 +7,10 @@ services:
   - mongodb
 
 cache: npm
-script: npm test
+
+before_script: "npm i coveralls nyc"
+script: "npm run eslint;npx nyc ava"
+after_script: "npm run report"
 
 # Don’t build pushes to branches other than our published branches. (This doesn’t affect PR
 # builds, which are separate from branch builds in Travis. If we didn’t have this config,

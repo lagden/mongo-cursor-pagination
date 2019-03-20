@@ -2,6 +2,7 @@
 
 [![NPM version][npm-img]][npm]
 [![Build Status][ci-img]][ci]
+[![Coverage Status][coveralls-img]][coveralls]
 [![XO code style][xo-img]][xo]
 
 
@@ -9,6 +10,8 @@
 [npm]:             https://www.npmjs.com/package/@tadashi/mongo-cursor-pagination
 [ci-img]:          https://travis-ci.org/lagden/mongo-cursor-pagination.svg
 [ci]:              https://travis-ci.org/lagden/mongo-cursor-pagination
+[coveralls-img]:   https://coveralls.io/repos/github/lagden/mongo-cursor-pagination/badge.svg?branch=master
+[coveralls]:       https://coveralls.io/github/lagden/mongo-cursor-pagination?branch=master
 [xo-img]:          https://img.shields.io/badge/code_style-XO-5ed9c7.svg
 [xo]:              https://github.com/sindresorhus/xo
 
@@ -20,7 +23,7 @@ For more information see the original project.
 ## Install
 
 ```
-npm i @tadashi/mongo-cursor-pagination -S`
+npm i @tadashi/mongo-cursor-pagination -S
 ```
 
 ## License
