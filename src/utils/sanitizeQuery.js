@@ -16,8 +16,8 @@ const resolveFields = require('./resolveFields')
 function normalizeQueryArray(query, param) {
 	const value = query[param]
 	if (Array.isArray(value)) {
-		for (let i = 0; i < value.length; ++i) {
-			if (!_.isString(value[i])) {
+		for (const v of value) {
+			if (!_.isString(v)) {
 				throw new TypeError('expected string array or comma-separated string for ' + param)
 			}
 		}
