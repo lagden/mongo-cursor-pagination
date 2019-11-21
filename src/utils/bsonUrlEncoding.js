@@ -1,6 +1,6 @@
 'use strict'
 
-const EJSON = require('mongodb-extjson')
+const {EJSON} = require('bson')
 
 function encode(obj) {
 	return encodeURIComponent(Buffer.from(EJSON.stringify(obj, {relaxed: true}), 'utf8').toString('base64'))
