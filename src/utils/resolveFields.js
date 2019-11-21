@@ -37,7 +37,7 @@ function fieldsFromMongo(projection = {}, includeIdDefault = false) {
  *   always be configured as specified.
  * @returns {?Object<String, *>=} The resolved fields declaration.
  */
-function resolveFields(desiredFields = null, allowedFields = null, overrideFields) {
+function resolveFields(desiredFields = null, allowedFields = null, overrideFields = undefined) {
 	if (desiredFields !== null && !Array.isArray(desiredFields)) {
 		throw new TypeError('expected nullable array for desiredFields')
 	}
