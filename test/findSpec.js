@@ -1,8 +1,8 @@
 'use strict'
 
-import test from 'ava'
-import paging from '../src'
-import dbUtils from './helpers/db'
+const test = require('ava')
+const paging = require('../src')
+const dbUtils = require('./helpers/db')
 
 let mongod
 

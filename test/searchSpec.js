@@ -1,8 +1,8 @@
 'use strict'
 
-import test from 'ava'
-import dbUtils from './helpers/db'
-import paging from '../src'
+const test = require('ava')
+const dbUtils = require('./helpers/db')
+const paging = require('../src')
 
 let mongod
 test.before('start mongo server', async () => {

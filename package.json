@@ -1,6 +1,6 @@
 {
   "name": "@tadashi/mongo-cursor-pagination",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Make it easy to return cursor-paginated results from a Mongo collection",
   "main": "src/index.js",
   "files": [
@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/lagden/mongo-cursor-pagination#readme",
   "dependencies": {
-    "bson": "4.0.2",
+    "bson": "4.0.4",
     "lodash": "4.17.15",
     "object-path": "0.11.4",
     "projection-utils": "1.1.0"
@@ -46,19 +46,20 @@
     "mongodb": ">=3.2.7"
   },
   "devDependencies": {
-    "ava": "2.4.0",
-    "eslint": "6.6.0",
-    "eslint-config-xo": "0.27.2",
-    "eslint-plugin-unicorn": "13.0.0",
-    "mongodb-memory-server": "6.0.1",
-    "prettier": "1.19.1"
+    "ava": "3.7.0",
+    "eslint": "6.8.0",
+    "eslint-config-xo": "0.29.1",
+    "eslint-plugin-unicorn": "18.0.1",
+    "mongodb-memory-server": "6.5.2",
+    "prettier": "2.0.4"
   },
   "engines": {
     "node": ">=10.0.0"
   },
   "ava": {
-    "helpers": [
-      "test/helpers/**/*"
+    "files": [
+      "test/**/*",
+      "!test/helpers/**/*"
     ]
   }
 }

@@ -1,7 +1,7 @@
 'use strict'
 
-import {MongoMemoryServer} from 'mongodb-memory-server'
-import {MongoClient} from 'mongodb'
+const {MongoMemoryServer} = require('mongodb-memory-server')
+const {MongoClient} = require('mongodb')
 
 function start() {
 	return new MongoMemoryServer({

@@ -23,7 +23,7 @@ const bsonUrlEncoding = require('./utils/bsonUrlEncoding')
  */
 async function search(collection, searchString, params = {}) {
 	if (params && params.limit) {
-		params.limit = parseInt(params.limit, 10)
+		params.limit = Number.parseInt(params.limit, 10)
 	}
 	if (params && params.next) {
 		params.next = bsonUrlEncoding.decode(params.next)

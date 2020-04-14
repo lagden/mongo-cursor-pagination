@@ -1,29 +1,24 @@
 'use strict'
 
-import test from 'ava'
-import resolveFields from '../../src/utils/resolveFields'
+const test = require('ava')
+const resolveFields = require('../../src/utils/resolveFields')
 
 test('throws', t => {
-	let error
-	error = t.throws(() => {
+	t.throws(() => {
 		resolveFields('xxx')
-	}, TypeError)
-	t.is(error.message, 'expected nullable array for desiredFields')
+	}, {instanceOf: TypeError, message: 'expected nullable array for desiredFields'})
 
-	error = t.throws(() => {
+	t.throws(() => {
 		resolveFields(null, 'xxx')
-	}, TypeError)
-	t.is(error.message, 'expected nullable plain object for allowedFields')
+	}, {instanceOf: TypeError, message: 'expected nullable plain object for allowedFields'})
 
-	error = t.throws(() => {
+	t.throws(() => {
 		resolveFields(null, null, 'xxx')
-	}, TypeError)
-	t.is(error.message, 'expected optional plain object for overrideFields')
+	}, {instanceOf: TypeError, message: 'expected optional plain object for overrideFields'})
 
-	error = t.throws(() => {
+	t.throws(() => {
 		resolveFields([], {user: false})
-	}, TypeError)
-	t.is(error.message, 'projection includes exclusion, but we do not support that')
+	}, {instanceOf: TypeError, message: 'projection includes exclusion, but we do not support that'})
 })
 
 test('should support empty fields', t => {

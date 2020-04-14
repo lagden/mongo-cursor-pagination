@@ -1,9 +1,9 @@
 'use strict'
 
-import test from 'ava'
-import {ObjectID} from 'mongodb'
-import bsonUrlEncoding from '../../src/utils/bsonUrlEncoding'
-import dbUtils from '../helpers/db'
+const test = require('ava')
+const {ObjectID} = require('mongodb')
+const bsonUrlEncoding = require('../../src/utils/bsonUrlEncoding')
+const dbUtils = require('../helpers/db')
 
 let mongod
 test.before('start mongo server', async () => {
