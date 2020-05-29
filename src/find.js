@@ -28,7 +28,7 @@ const {prepareResponse, generateSort, generateCursorQuery} = require('./utils/qu
  *    -before {String} The _id to start querying previous page.
  */
 
-async function find(collection, _params = {}) {
+async function find(collection, _params) {
 	const removePaginatedFieldInResponse = _params.projection && !_params.projection[_params.paginatedField]
 
 	const params = _.defaults(

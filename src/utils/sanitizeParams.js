@@ -5,7 +5,7 @@ const bsonUrlEncoding = require('./bsonUrlEncoding')
 const getPropertyViaDotNotation = require('./getPropertyViaDotNotation')
 const config = require('../config')
 
-async function sanitizeParams(collection, params = {}) {
+async function sanitizeParams(collection, params) {
 	if (params && params.previous) {
 		params.previous = bsonUrlEncoding.decode(params.previous)
 	}
@@ -49,6 +49,8 @@ async function sanitizeParams(collection, params = {}) {
 					_id: false
 				}
 			)
+
+			/* istanbul ignore else */
 			if (doc) {
 				// Handle usage of dot notation in paginatedField
 				const prop = getPropertyViaDotNotation(params.paginatedField, doc)
@@ -76,6 +78,8 @@ async function sanitizeParams(collection, params = {}) {
 					_id: false
 				}
 			)
+
+			/* istanbul ignore else */
 			if (doc) {
 				// Handle usage of dot notation in paginatedField
 				const prop = getPropertyViaDotNotation(params.paginatedField, doc)

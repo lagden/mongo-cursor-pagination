@@ -21,7 +21,7 @@ const bsonUrlEncoding = require('./utils/bsonUrlEncoding')
  *    -next {String} The value to start querying the page. Defaults to start at the beginning of
  *      the results.
  */
-async function search(collection, searchString, params = {}) {
+async function search(collection, searchString, params) {
 	if (params && params.limit) {
 		params.limit = Number.parseInt(params.limit, 10)
 	}

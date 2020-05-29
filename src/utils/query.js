@@ -81,7 +81,7 @@ module.exports = {
 	 *
 	 * @return {Object} a cursor offset query
 	 */
-	generateCursorQuery(params = {}) {
+	generateCursorQuery(params) {
 		if (!params.next && !params.previous) {
 			return {}
 		}

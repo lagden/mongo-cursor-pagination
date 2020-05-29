@@ -8,15 +8,14 @@ const {ProjectionFieldSet} = require('projection-utils')
  * doesn't have exclusion rules.
  *
  * @param {Object<String, *>} projection The projected fields.
- * @param {Boolean=} includeIdDefault Whether to include _id by default (mongo's default behavior).
  * @returns {ProjectionFieldSet} The synthesized field set.
  */
-function fieldsFromMongo(projection = {}, includeIdDefault = false) {
+function fieldsFromMongo(projection = {}) {
 	const fields = _.reduce(projection, (memo, value, key) => {
 		if (key !== '_id' && value !== undefined && !value) {
 			throw new TypeError('projection includes exclusion, but we do not support that')
 		}
-		if (value || (key === '_id' && value === undefined && includeIdDefault)) {
+		if (value || (key === '_id' && value === undefined)) {
 			memo.push(key)
 		}
 
