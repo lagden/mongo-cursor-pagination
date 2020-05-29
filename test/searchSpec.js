@@ -1,3 +1,5 @@
+/* eslint unicorn/no-useless-undefined: 0 */
+
 'use strict'
 
 const test = require('ava')

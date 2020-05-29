@@ -71,7 +71,7 @@ function sanitizeQuery(query, params = {}) {
 	// Don't trust fields passed in the querystring, so whitelist them against the fields defined in
 	// parameters.
 	const fields = resolveFields(normalizeQueryArray(query, 'fields'), params.projection, params.overrideFields)
-	if (fields === null) {
+	if (fields === undefined) {
 		throw new TypeError('no valid fields provided')
 	}
 

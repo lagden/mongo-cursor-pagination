@@ -1,3 +1,5 @@
+/* eslint unicorn/no-useless-undefined: 0 */
+
 'use strict'
 
 const test = require('ava')
@@ -9,11 +11,11 @@ test('throws', t => {
 	}, {instanceOf: TypeError, message: 'expected nullable array for desiredFields'})
 
 	t.throws(() => {
-		resolveFields(null, 'xxx')
+		resolveFields(undefined, 'xxx')
 	}, {instanceOf: TypeError, message: 'expected nullable plain object for allowedFields'})
 
 	t.throws(() => {
-		resolveFields(null, null, 'xxx')
+		resolveFields(undefined, undefined, 'xxx')
 	}, {instanceOf: TypeError, message: 'expected optional plain object for overrideFields'})
 
 	t.throws(() => {
@@ -24,10 +26,10 @@ test('throws', t => {
 test('should support empty fields', t => {
 	t.deepEqual(resolveFields(), {})
 	t.deepEqual(resolveFields([]), {})
-	t.deepEqual(resolveFields([], null), {})
-	t.deepEqual(resolveFields([], null, {}), {})
-	t.deepEqual(resolveFields([], {}), null)
-	t.deepEqual(resolveFields([], {}, {}), null)
+	t.deepEqual(resolveFields([], undefined), {})
+	t.deepEqual(resolveFields([], undefined, {}), {})
+	t.deepEqual(resolveFields([], {}), undefined)
+	t.deepEqual(resolveFields([], {}, {}), undefined)
 })
 
 test('should support default fields', t => {

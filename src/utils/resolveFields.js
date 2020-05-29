@@ -37,12 +37,13 @@ function fieldsFromMongo(projection = {}, includeIdDefault = false) {
  *   always be configured as specified.
  * @returns {?Object<String, *>=} The resolved fields declaration.
  */
-function resolveFields(desiredFields = null, allowedFields = null, overrideFields = undefined) {
-	if (desiredFields !== null && !Array.isArray(desiredFields)) {
+function resolveFields(...args) {
+	const [desiredFields, allowedFields, overrideFields] = args
+	if (desiredFields !== undefined && !Array.isArray(desiredFields)) {
 		throw new TypeError('expected nullable array for desiredFields')
 	}
 
-	if (allowedFields !== null && !_.isObject(allowedFields)) {
+	if (allowedFields !== undefined && !_.isObject(allowedFields)) {
 		throw new TypeError('expected nullable plain object for allowedFields')
 	}
 
@@ -64,7 +65,7 @@ function resolveFields(desiredFields = null, allowedFields = null, overrideField
 	if (fields.isEmpty()) {
 		// This projection isn't representable as a mongo projection - nor should it be. We don't want
 		// to query mongo for zero fields.
-		return null
+		return
 	}
 
 	// Generate the mongo projection.
