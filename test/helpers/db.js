@@ -12,7 +12,7 @@ function start() {
 }
 
 async function db(mongod) {
-	const mongoConn = await mongod.getConnectionString()
+	const mongoConn = await mongod.getUri()
 	const mongoDB = await mongod.getDbName()
 	const client = await MongoClient.connect(mongoConn, {
 		poolSize: 100,
