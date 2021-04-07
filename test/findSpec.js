@@ -4,7 +4,7 @@
 
 const test = require('ava')
 const paging = require('../src')
-const dbUtils = require('./helpers/db')
+const dbUtils = require('./helper/db')
 
 let mongod
 

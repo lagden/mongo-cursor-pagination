@@ -3,7 +3,7 @@
 'use strict'
 
 const test = require('ava')
-const dbUtils = require('./helpers/db')
+const dbUtils = require('./helper/db')
 const paging = require('../src')
 
 let mongod
@@ -12,8 +12,8 @@ test.before('start mongo server', async () => {
 	const db = await dbUtils.db(mongod)
 
 	await Promise.all([
-		db.collection('test_paging_search').createIndex({mytext: 'text'}, {w: 1}),
-		db.collection('test_duplicate_search').createIndex({mytext: 'text'}, {w: 1})
+		db.collection('test_paging_search').createIndex({mytext: 'text'}, {writeConcern: {w: 1}}),
+		db.collection('test_duplicate_search').createIndex({mytext: 'text'}, {writeConcern: {w: 1}})
 	])
 
 	await Promise.all([

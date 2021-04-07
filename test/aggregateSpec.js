@@ -2,7 +2,7 @@
 
 const test = require('ava')
 const paging = require('../src')
-const dbUtils = require('./helpers/db')
+const dbUtils = require('./helper/db')
 
 let mongod
 
@@ -46,18 +46,23 @@ test.before('start mongo server', async () => {
 
 		db.collection('aggregate_test_aggregation').insertMany([
 			{
+				_id: 1,
 				items: [1, 2, 3]
 			},
 			{
+				_id: 2,
 				items: [4, 5, 6]
 			},
 			{
+				_id: 3,
 				items: [1, 3, 6]
 			},
 			{
+				_id: 4,
 				items: [2, 4, 5]
 			}
 		]),
+
 		db.collection('aggregate_test_aggregation_lookup').insertMany([
 			{
 				_id: 1,
@@ -97,7 +102,9 @@ test('return expected results from aggregation', async t => {
 		aggregation: [
 			{
 				$match: {
-					items: 5
+					items: {
+						$in: [5]
+					}
 				}
 			},
 			{

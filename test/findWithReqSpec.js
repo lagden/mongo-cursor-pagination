@@ -2,7 +2,7 @@
 
 const test = require('ava')
 const _ = require('lodash')
-const dbUtils = require('./helpers/db')
+const dbUtils = require('./helper/db')
 const paging = require('../src')
 
 let mongod

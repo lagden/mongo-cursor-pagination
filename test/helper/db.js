@@ -6,7 +6,11 @@ const {MongoClient} = require('mongodb')
 function start() {
 	return new MongoMemoryServer({
 		binary: {
+			// version: '4.4.0'
 			version: '4.0.6'
+		},
+		instance: {
+			storageEngine: 'wiredTiger'
 		}
 	})
 }
@@ -15,7 +19,6 @@ async function db(mongod) {
 	const mongoConn = await mongod.getUri()
 	const mongoDB = await mongod.getDbName()
 	const client = await MongoClient.connect(mongoConn, {
-		poolSize: 100,
 		useNewUrlParser: true,
 		useUnifiedTopology: true
 	})

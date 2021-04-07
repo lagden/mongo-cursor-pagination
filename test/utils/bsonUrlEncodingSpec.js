@@ -3,7 +3,7 @@
 const test = require('ava')
 const {ObjectID} = require('mongodb')
 const bsonUrlEncoding = require('../../src/utils/bsonUrlEncoding')
-const dbUtils = require('../helpers/db')
+const dbUtils = require('../helper/db')
 
 let mongod
 test.before('start mongo server', async () => {

@@ -1,6 +1,6 @@
 {
   "name": "@tadashi/mongo-cursor-pagination",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Make it easy to return cursor-paginated results from a Mongo collection",
   "main": "src/index.js",
   "files": [
@@ -8,14 +8,6 @@
     "README.md",
     "src"
   ],
-  "scripts": {
-    "report": "nyc report --reporter=text-lcov | coveralls",
-    "precoverage": "npm run pretest",
-    "coverage": "nyc --reporter=text-summary --reporter=lcov ava",
-    "eslint": "eslint --ignore-path .gitignore .",
-    "pretest": "npm run eslint",
-    "test": "ava"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lagden/mongo-cursor-pagination.git"
@@ -38,32 +30,31 @@
     "url": "https://github.com/lagden/mongo-cursor-pagination/issues"
   },
   "homepage": "https://github.com/lagden/mongo-cursor-pagination#readme",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "scripts": {
+    "eslint": "eslint --ignore-path .gitignore .",
+    "pretest": "npm run eslint",
+    "test": "nyc --reporter=text-summary --reporter=lcov ava"
+  },
   "dependencies": {
-    "bson": "4.2.2",
-    "lodash": "4.17.20",
+    "bson": "4.3.0",
+    "lodash": "4.17.21",
     "object-path": "0.11.5",
     "projection-utils": "1.1.0"
   },
   "peerDependencies": {
-    "mongodb": ">=3.2.7"
+    "mongodb": ">= 3.6.* < 4"
   },
   "devDependencies": {
-    "ava": "3.14.0",
-    "coveralls": "3.1.0",
-    "eslint": "7.15.0",
-    "eslint-config-xo": "0.33.1",
-    "eslint-plugin-unicorn": "23.0.0",
-    "mongodb-memory-server": "6.9.2",
+    "ava": "3.15.0",
+    "eslint": "7.23.0",
+    "eslint-config-xo": "0.35.0",
+    "eslint-plugin-unicorn": "29.0.0",
+    "mongodb": "3.6.6",
+    "mongodb-memory-server": "6.9.6",
     "nyc": "15.1.0",
     "prettier": "2.2.1"
-  },
-  "engines": {
-    "node": ">=10.0.0"
-  },
-  "ava": {
-    "files": [
-      "test/**/*",
-      "!test/helpers/**/*"
-    ]
   }
 }
